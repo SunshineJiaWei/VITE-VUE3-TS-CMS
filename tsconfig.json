@@ -11,8 +11,14 @@
     "isolatedModules": true,
     "esModuleInterop": true,
     "lib": ["ESNext", "DOM"],
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+        "@/*": [ "src/*" ]
+    }
   },
+  // 配置路径别名
+  
   "include": [
     "src/**/*.ts",
     "src/**/*.d.ts",

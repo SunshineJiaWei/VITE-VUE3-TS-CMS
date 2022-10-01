@@ -31,25 +31,21 @@ class JWRequest {
     this.instance.interceptors.request.use(
       (config) => {
         if (this.showLoading) {
-          // ts不知道如何declear这个ElLoading
           this.loading = ElLoading.service({
             lock: true,
             text: '正在请求数据...',
             background: 'rgba(0,0,0,0.5)'
           })
         }
-        console.log('所有实例都有的拦截器：请求拦截成功')
         return config
       },
       (err) => {
-        console.log('所有实例都有的拦截器：请求拦截失败')
         return err
       }
     )
 
     this.instance.interceptors.response.use(
       (res) => {
-        console.log('所有实例都有的拦截器：响应拦截成功')
         const data = res.data
         if (data.returnCode === '-1001') {
           console.log('请求失败，错误信息')
@@ -60,7 +56,6 @@ class JWRequest {
         return res.data
       },
       (err) => {
-        console.log('所有实例都有的拦截器：响应拦截失败')
         this.loading?.close()
         // 判断不同的httpErrorCode显示不同的错误信息
         if (err.response.status === '404') {
@@ -71,7 +66,7 @@ class JWRequest {
     )
   }
 
-  // 封装请求的方法
+  // 封装请求的方法，外部通过
   request<T>(config: JWRequestConfig<T>): Promise<T> {
     return new Promise((resolve, reject) => {
       // 单个请求对请求config的处理
@@ -92,7 +87,6 @@ class JWRequest {
           if (config.interceptors?.responseInterceptor) {
             res = config.interceptors.responseInterceptor(res)
           }
-          console.log('res', res)
           // 将showLoading变更回初始值，这样不会影响下一次请求
           this.showLoading = DEFAULT_LOADING
           // 将结果resolve返回出去

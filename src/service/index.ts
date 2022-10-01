@@ -1,6 +1,7 @@
 // service统一的出口
 import JWRequest from './request'
 import { BASE_URL, TIME_OUT } from './request/config'
+import localCache from '@/utils/cache'
 
 const jwRequest = new JWRequest({
   baseURL: BASE_URL,
@@ -8,7 +9,7 @@ const jwRequest = new JWRequest({
   interceptors: {
     requestInterceptor: (config) => {
       // 携带token拦截
-      const token = ''
+      const token = localCache.getCache('token') ?? ''
       if (token && config.headers) {
         config.headers.Authorization = `Bearer ${token}`
       }
