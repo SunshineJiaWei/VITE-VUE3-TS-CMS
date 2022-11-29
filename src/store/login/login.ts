@@ -11,6 +11,7 @@ import {
 } from '@/service/login/login'
 import localCache from '@/utils/cache'
 import router from '@/router'
+import { mapMenustoRoutes } from '@/utils/map-menus'
 
 const loginModule: Module<ILoginState, IRootState> = {
   namespaced: true,
@@ -30,6 +31,10 @@ const loginModule: Module<ILoginState, IRootState> = {
     },
     changeUserMenus(state, userMenus: any) {
       state.userMenus = userMenus
+
+      // 进行usermenus -> routes的映射
+      const rontes = mapMenustoRoutes(userMenus)
+      console.log('rontes', rontes)
     }
   },
   actions: {
@@ -51,6 +56,7 @@ const loginModule: Module<ILoginState, IRootState> = {
       const userMenus = userMenuResult.data
       commit('changeUserMenus', userMenus)
       localCache.setCache('userMenus', userMenus)
+      console.log('userMenus', userMenus)
 
       router.push('/main')
     },
